@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Item } from '../model/item.model';
+import { ItemService } from '../service/item.service';
 
 @Component({
   selector: 'app-item',
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ItemComponent implements OnInit {
 
-  constructor() { }
+  @Input() items: Item[];
+
+  constructor(private itemService: ItemService) { }
 
   ngOnInit() {
+    this.itemService.findAll().then(items => this.items = items);
   }
 
 }
