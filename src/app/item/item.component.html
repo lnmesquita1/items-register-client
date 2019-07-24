@@ -26,7 +26,7 @@
             <td>{{ item.dtValidade }}</td>
             <td>{{ item.dtFabricacao }}</td>
             <td>
-                <button pButton type="button" icon="pi pi-check" style="margin-right: 3px;" (click)=onEditItem(item.cdItem)></button>
+                <button pButton type="button" icon="pi pi-pencil" style="margin-right: 3px;" (click)=onEditItem(item.cdItem)></button>
                 <button pButton type="button" icon="pi pi-times" class="ui-button-danger" (click)="onDeleteItem(item.cdItem)"></button>
             </td>
         </tr>
