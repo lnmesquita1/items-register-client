@@ -1,6 +1,8 @@
 <h3>
     Listagem de ítens
   </h3>
+  <p-messages [value]="msgs"></p-messages>
+  <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
   <p-table [value]="items">
     <ng-template pTemplate="header">
         <tr>
@@ -16,15 +18,15 @@
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-item>
-        <tr>
+        <tr >
             <td>{{ item.cdItem }}</td>
             <td>{{ item.dsItem }}</td>
-            <td>{{ item.unidade }}</td>
+            <td>{{ item.unidade.label }}</td>
             <td>{{ item.qtd }}</td>
             <td>{{ item.preco }}</td>
             <td>{{ item.produtoPerecivel }}</td>
-            <td>{{ item.dtValidade }}</td>
-            <td>{{ item.dtFabricacao }}</td>
+            <td>{{ dataFormatada(item.dtValidade) }}</td>
+            <td>{{ dataFormatada(item.dtFabricacao) }}</td>
             <td>
                 <button pButton type="button" icon="pi pi-pencil" style="margin-right: 3px;" (click)=onEditItem(item.cdItem)></button>
                 <button pButton type="button" icon="pi pi-times" class="ui-button-danger" (click)="onDeleteItem(item.cdItem)"></button>

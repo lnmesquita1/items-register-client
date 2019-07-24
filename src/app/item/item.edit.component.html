@@ -1,22 +1,32 @@
 <h3>Cadastro de itens</h3>
 
-<form #itemForm="ngForm" (ngSubmit)="salvar(itemForm)">
-<div class="ui-g ui-fluid">
+<form #itemForm="ngForm" (ngSubmit)="validar(itemForm)">
+
+  <p-messages [(value)]="msgs"></p-messages>
+
+  <div class="ui-g ui-fluid">
   <div class="ui-g-12 ui-md-6 ui-lg-4">
     <p class="label">Nome do item</p>
-    <input ngModel name="nomeItem" id="float-input" type="text" size="30" pInputText>
+    <input [(ngModel)]="nomeItem" name="nomeItem" type="text" size="30" pInputText required>
+    
+    <div *ngIf="nomeItemValidation">
+      <p-message severity="error" text="Field is required"></p-message>
+    </div>
   </div>
   <div class="ui-g-12 ui-md-6 ui-lg-4">
     <p class="label">Unidade</p>
-    <p-dropdown [options]="unidades" (onChange)="verificaAbreviaturaUnidade($event)" [(ngModel)]="unidade" name="unidade"
+    <p-dropdown [options]="_unidades" (onChange)="verificaAbreviaturaUnidade($event)" required [(ngModel)]="unidade" name="unidade"
       placeholder="Selecione a unidade" optionLabel="label" [showClear]="true">
     </p-dropdown>
+    <div *ngIf="unidadeValidation">
+        <p-message severity="error" text="Field is required"></p-message>
+      </div>
   </div>
 
   <div class="ui-g-12 ui-md-6 ui-lg-4">
     <p class="label">Quantidade</p>
     <div class="ui-inputgroup">
-      <input type="number" ngModel name="quantidade" pInputText>
+      <input type="number" [(ngModel)]="quantidade" name="quantidade" pInputText>
       <span class="ui-inputgroup-addon">{{ un }}</span>
     </div>
   </div>
@@ -24,22 +34,42 @@
       <p class="label">Preço</p>
       <div class="ui-inputgroup">
           <span class="ui-inputgroup-addon">$</span>
-        <input type="text" pInputText currencyMask ngModel name="preco" [options]="{ prefix: '', thousands: '.', decimal: ',' }">
+        <input type="text" pInputText currencyMask [(ngModel)]="preco" required name="preco" [options]="{ prefix: '', thousands: '.', decimal: ',' }">
         </div>
+        <div *ngIf="precoValidation">
+            <p-message severity="error" text="Field is required"></p-message>
+          </div>
   </div>
   <div class="ui-g-12 ui-md-6 ui-lg-4">
     <p class="label">Data de validade</p>
-    <p-calendar ngModel name="dataValidade" rquired dateFormat="dd/mm/yy"></p-calendar>
+    <div *ngIf="produtoPerecivel;then dataValidadeRequired else dataValidadeNotRequired"></div>
+
+    <ng-template #dataValidadeRequired>
+      <p-calendar [(ngModel)]="dataValidade" name="dataValidade" rquired dateFormat="dd/mm/yy"></p-calendar>
+    </ng-template>
+    <ng-template #dataValidadeNotRequired>
+      <p-calendar [(ngModel)]="dataValidade" name="dataValidade" dateFormat="dd/mm/yy"></p-calendar>
+    </ng-template>
+    <div *ngIf="dataValidadeValidation">
+        <p-message severity="error" text="Field is required"></p-message>
+      </div>
   </div>
   <div class="ui-g-12 ui-md-6 ui-lg-4">
     <p class="label">Data de fabricação</p>
-    <p-calendar ngModel name="dataFabricacao" dateFormat="dd/mm/yy"></p-calendar>
+    <p-calendar [(ngModel)]="dataFabricacao" name="dataFabricacao" required dateFormat="dd/mm/yy"></p-calendar>
+    <div *ngIf="dataFabricacaoValidation">
+        <p-message severity="error" text="Field is required"></p-message>
+      </div>
   </div>
   <div class="ui-g-12 ui-md-6 ui-lg-4">
     <p class="label">Produto perecível</p>
-    <p-inputSwitch ngModel name="produtoPerecivel"></p-inputSwitch>
+    <p-inputSwitch [(ngModel)]="produtoPerecivel" name="produtoPerecivel" required></p-inputSwitch>
+    <div *ngIf="produtoPerecivelValidation">
+        <p-message severity="error" text="Field is required"></p-message>
+      </div>
   </div>
 
 </div>
-<p-button type="submit" icon="pi pi-check" label="Salvar" style="float:right;"></p-button>
+<button pButton type="button" (click)="redirectToList()" icon="pi pi-times" label="Cancelar" class="ui-button-danger" style="float:right;"></button>
+<p-button type="submit" icon="pi pi-check" label="Salvar" style="float:right; margin-right: 3px;"></p-button>
 </form>

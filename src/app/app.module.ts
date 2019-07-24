@@ -12,6 +12,10 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputMaskModule } from 'primeng/inputmask';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
 import { CalendarModule } from 'primeng/calendar';
+import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 import { AppComponent } from './app.component';
 import { ItemComponent } from './item/item.component';
@@ -20,6 +24,7 @@ import { ContentComponent } from './content/content.component';
 import { MenuComponent } from './menu/menu.component';
 import { ContainerComponent } from './container/container.component';
 import { ItemService } from './service/item.service';
+import { ConfirmationService } from 'primeng/api';
 
 const routes: Routes = [
   { path: 'item', component: ItemComponent },
@@ -47,9 +52,13 @@ const routes: Routes = [
     InputMaskModule,
     CurrencyMaskModule,
     CalendarModule,
+    MessagesModule,
+    MessageModule,
+    DynamicDialogModule,
+    ConfirmDialogModule,
     RouterModule.forRoot(routes)
   ],
-  providers: [ItemService],
+  providers: [ItemService, ConfirmationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
