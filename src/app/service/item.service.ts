@@ -12,7 +12,7 @@ export class ItemService {
     const items = new Array<Item>();
 
     while ( i-- ) {
-        if (keys[i] !== 'currentUser') {
+        if (!Number.isNaN(parseInt(keys[i]))) {
           items.push( JSON.parse(localStorage.getItem(keys[i])));
         }
     }
@@ -28,8 +28,8 @@ export class ItemService {
       return JSON.parse(localStorage.getItem(cdItem));
   }
 
-  removeItem(item: Item) {
-      return localStorage.removeItem(item.cdItem);
+  removeItem(cdItem: string) {
+      localStorage.removeItem(cdItem);
   }
 
   getNextCdCode() {
