@@ -10,7 +10,7 @@
     <input [(ngModel)]="nomeItem" name="nomeItem" type="text" size="30" pInputText required>
     
     <div *ngIf="nomeItemValidation">
-      <p-message severity="error" text="Field is required"></p-message>
+      <p-message severity="error" text="{{ mensagemCampoObrigatorio }}"></p-message>
     </div>
   </div>
   <div class="ui-g-12 ui-md-6 ui-lg-4">
@@ -19,7 +19,7 @@
       placeholder="Selecione a unidade" optionLabel="label" [showClear]="true">
     </p-dropdown>
     <div *ngIf="unidadeValidation">
-        <p-message severity="error" text="Field is required"></p-message>
+        <p-message severity="error" text="{{ mensagemCampoObrigatorio }}"></p-message>
       </div>
   </div>
 
@@ -37,7 +37,7 @@
         <input type="text" pInputText currencyMask [(ngModel)]="preco" required name="preco" [options]="{ prefix: '', thousands: '.', decimal: ',' }">
         </div>
         <div *ngIf="precoValidation">
-            <p-message severity="error" text="Field is required"></p-message>
+            <p-message severity="error" text="{{ mensagemCampoObrigatorio }}"></p-message>
           </div>
   </div>
   <div class="ui-g-12 ui-md-6 ui-lg-4">
@@ -51,21 +51,21 @@
       <p-calendar [(ngModel)]="dataValidade" name="dataValidade" dateFormat="dd/mm/yy"></p-calendar>
     </ng-template>
     <div *ngIf="dataValidadeValidation">
-        <p-message severity="error" text="Field is required"></p-message>
+        <p-message severity="error" text="{{ mensagemCampoObrigatorio }}"></p-message>
       </div>
   </div>
   <div class="ui-g-12 ui-md-6 ui-lg-4">
     <p class="label">Data de fabricação</p>
     <p-calendar [(ngModel)]="dataFabricacao" name="dataFabricacao" required dateFormat="dd/mm/yy"></p-calendar>
     <div *ngIf="dataFabricacaoValidation">
-        <p-message severity="error" text="Field is required"></p-message>
+        <p-message severity="error" text="{{ mensagemCampoObrigatorio }}"></p-message>
       </div>
   </div>
   <div class="ui-g-12 ui-md-6 ui-lg-4">
     <p class="label">Produto perecível</p>
     <p-inputSwitch [(ngModel)]="produtoPerecivel" name="produtoPerecivel" required></p-inputSwitch>
     <div *ngIf="produtoPerecivelValidation">
-        <p-message severity="error" text="Field is required"></p-message>
+        <p-message severity="error" text="{{ mensagemCampoObrigatorio }}"></p-message>
       </div>
   </div>
 

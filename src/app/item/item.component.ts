@@ -22,6 +22,10 @@ export class ItemComponent implements OnInit {
     this.findAll();
   }
 
+  redirectToList() {
+    this.router.navigate(['/item/edit']);
+  }
+
   findAll() {
     this.itemService.findAll().then(items => {
       this.items = [

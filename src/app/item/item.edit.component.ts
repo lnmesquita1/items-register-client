@@ -23,7 +23,7 @@ export class ItemEditComponent implements OnInit {
 
   cdItem: string;
   @Input() un: string;
-  @Input() produtoPerecivel = true;
+  @Input() produtoPerecivel = false;
   @Input() unidade: Unidade;
   @Input() preco: string;
   @Input() nomeItem: string;
@@ -36,6 +36,9 @@ export class ItemEditComponent implements OnInit {
   precoValidation = false;
   produtoPerecivelValidation = false;
   unidadeValidation = false;
+
+  mensagemCampoObrigatorio = 'Este campo é obrigatório!';
+  mensagemGlobal = 'Formulário não está válido. Verifique os campos. ';
 
   constructor(private route: ActivatedRoute, private itemService: ItemService, private router: Router) { }
 
@@ -80,19 +83,33 @@ export class ItemEditComponent implements OnInit {
   }
 
   validar(form: NgForm) {
+    const dtFabricacao = new Date(form.value.dataFabricacao);
+    const perecivel = form.value.produtoPerecivel;
+    const dtValidade = new Date(form.value.dataValidade);
+    this.verificaCamposPreenchidos(form);
     if (!form.valid) {
-        this.nomeItemValidation = form.controls.nomeItem.status === 'INVALID';
-        this.dataFabricacaoValidation = form.controls.dataFabricacao.status === 'INVALID';
-        this.dataValidadeValidation = form.controls.dataValidade.status === 'INVALID';
-        this.precoValidation = form.controls.preco.status === 'INVALID';
-        this.produtoPerecivelValidation = form.controls.produtoPerecivel.status === 'INVALID';
-        this.unidadeValidation = form.controls.unidade.status === 'INVALID';
-      this.showWarn(form);
+      this.verificaCamposPreenchidos(form);
+      this.showWarn(this.mensagemGlobal);
     } else {
-      this.salvar(form);
-      this.showSuccess();
-      form.resetForm();
+      if (dtValidade < new Date()) {
+        this.showWarn('A data de validade é menor que a data de hoje. O item está vencido!');
+      } else if (perecivel && dtFabricacao > dtValidade) {
+        this.showWarn('Regra para produto perecível: A data de fabricação não pode ser superior a data de validade!');
+      } else {
+        this.salvar(form);
+        this.showSuccess();
+        form.resetForm();
+      }
     }
+  }
+
+  verificaCamposPreenchidos(form) {
+    this.nomeItemValidation = form.controls.nomeItem.status === 'INVALID';
+    this.dataFabricacaoValidation = form.controls.dataFabricacao.status === 'INVALID';
+    this.dataValidadeValidation = form.controls.dataValidade.status === 'INVALID';
+    this.precoValidation = form.controls.preco.status === 'INVALID';
+    this.produtoPerecivelValidation = form.controls.produtoPerecivel.status === 'INVALID';
+    this.unidadeValidation = form.controls.unidade.status === 'INVALID';
   }
 
   redirectToList() {
@@ -116,12 +133,12 @@ export class ItemEditComponent implements OnInit {
 
   showSuccess() {
     this.msgs = [];
-    this.msgs.push({ severity: 'success', summary: 'Success Message', detail: 'Order submitted' });
+    this.msgs.push({ severity: 'success', summary: 'Operação efetuada', detail: 'Item salvo com sucesso!' });
   }
 
-  showWarn(form) {
+  showWarn(mensagem) {
     this.msgs = [];
-    this.msgs.push({ severity: 'warn', summary: 'Atenção! ', detail: 'Formulário não está válido. Verifique os campos. ' });
+    this.msgs.push({ severity: 'warn', summary: 'Atenção! ', detail: mensagem });
   }
 
 }
