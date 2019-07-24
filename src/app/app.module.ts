@@ -6,6 +6,12 @@ import { Routes, RouterModule } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { FormsModule } from '@angular/forms';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { InputMaskModule } from 'primeng/inputmask';
+import { CurrencyMaskModule } from 'ng2-currency-mask';
+import { CalendarModule } from 'primeng/calendar';
 
 import { AppComponent } from './app.component';
 import { ItemComponent } from './item/item.component';
@@ -35,6 +41,12 @@ const routes: Routes = [
     InputTextModule,
     DropdownModule,
     TableModule,
+    ButtonModule,
+    FormsModule,
+    InputSwitchModule,
+    InputMaskModule,
+    CurrencyMaskModule,
+    CalendarModule,
     RouterModule.forRoot(routes)
   ],
   providers: [ItemService],

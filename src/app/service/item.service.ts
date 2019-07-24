@@ -7,32 +7,33 @@ export class ItemService {
   constructor() { }
 
   async findAll() {
-    let values = [],
-        keys = Object.keys(localStorage),
-        i = keys.length;
+    const keys = Object.keys(localStorage);
+    let i = keys.length;
+    const items = new Array<Item>();
 
     while ( i-- ) {
         if (keys[i] !== 'currentUser') {
-          values.push( localStorage.getItem(keys[i]) );
+          items.push( JSON.parse(localStorage.getItem(keys[i])));
         }
     }
-
-    const items = new Array<Item>();
-    values.forEach(item => items.push(item));
 
     return items;
   }
 
-  setItem(item: Item) {
+  async setItem(item: Item) {
     localStorage.setItem(item.cdItem, JSON.stringify(item));
   }
 
-  getItem(item: Item) {
-      return localStorage.getItem(item.cdItem);
+  getItem(cdItem: string): Item {
+      return JSON.parse(localStorage.getItem(cdItem));
   }
 
   removeItem(item: Item) {
       return localStorage.removeItem(item.cdItem);
+  }
+
+  getNextCdCode() {
+    return Object.keys(localStorage).length++;
   }
 
 }

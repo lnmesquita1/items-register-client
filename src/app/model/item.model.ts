@@ -4,11 +4,11 @@ export class Item {
 
     cdItem: string;
     dsItem: string;
-    unidade: Unidade;
-    qtd: number;
-    preco: number;
-    produtoPerecivel: string;
-    dtValidade: Date;
     dtFabricacao: string;
+    dtValidade: string;
+    preco: string;
+    produtoPerecivel: string;
+    qtd: string;
+    unidade: Unidade;
 
 }

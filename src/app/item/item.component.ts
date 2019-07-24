@@ -1,6 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
 import { Item } from '../model/item.model';
 import { ItemService } from '../service/item.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-item',
@@ -9,12 +10,27 @@ import { ItemService } from '../service/item.service';
 })
 export class ItemComponent implements OnInit {
 
-  @Input() items: Item[];
+  items: Item[];
+  @Input() selectedItem: Item;
 
-  constructor(private itemService: ItemService) { }
+  constructor(private itemService: ItemService, private router: Router) { }
 
-  ngOnInit() {
-    this.itemService.findAll().then(items => this.items = items);
+  async ngOnInit() {
+    this.itemService.findAll().then(items => {
+      this.items = [
+        ...items
+      ];
+      console.log(this.items);
+    });
+  }
+
+  onDeleteItem(item: Item) {
+    console.log(item);
+  }
+
+  onEditItem(cdItem: string) {
+    this.router.navigate(['/item/edit', { cdItem: cdItem }]);
+    console.log(cdItem);
   }
 
 }
