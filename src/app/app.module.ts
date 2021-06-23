@@ -25,10 +25,13 @@ import { MenuComponent } from './menu/menu.component';
 import { ContainerComponent } from './container/container.component';
 import { ItemService } from './service/item.service';
 import { ConfirmationService } from 'primeng/api';
+import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
 
 const routes: Routes = [
-  { path: 'item', component: ItemComponent },
-  { path: 'item/edit', component: ItemEditComponent },
+  { path: '', redirectTo: '/items-register-client', pathMatch: 'full'},
+  { path: 'items-register-client', component: DashboardComponent },
+  { path: 'items-register-client/item', component: ItemComponent },
+  { path: 'items-register-client/item/edit', component: ItemEditComponent },
 ];
 @NgModule({
   declarations: [
@@ -37,7 +40,8 @@ const routes: Routes = [
     ItemEditComponent,
     ContentComponent,
     MenuComponent,
-    ContainerComponent
+    ContainerComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
