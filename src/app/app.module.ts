@@ -56,7 +56,7 @@ const routes: Routes = [
     MessageModule,
     DynamicDialogModule,
     ConfirmDialogModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })
   ],
   providers: [ItemService, ConfirmationService],
   bootstrap: [AppComponent]
