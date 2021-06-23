@@ -28,10 +28,9 @@ import { ConfirmationService } from 'primeng/api';
 import { DashboardComponent } from './dashboard/dashboard/dashboard.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/items-register-client', pathMatch: 'full'},
-  { path: 'items-register-client', component: DashboardComponent },
-  { path: 'items-register-client/item', component: ItemComponent },
-  { path: 'items-register-client/item/edit', component: ItemEditComponent },
+  { path: '', component: DashboardComponent },
+  { path: 'item', component: ItemComponent },
+  { path: 'item/edit', component: ItemEditComponent },
 ];
 @NgModule({
   declarations: [
