@@ -4,7 +4,7 @@ import { ItemService } from '../service/item.service';
 import { Item } from '../model/item.model';
 import { unidades, Unidade } from '../model/unidade.model';
 import { NgForm } from '@angular/forms';
-import { Message } from 'primeng/components/common/message';
+import { Message } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
 
 @Component({
