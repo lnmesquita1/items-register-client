@@ -1,3 +1,13 @@
 .ng-star-inserted {
     margin-top: 5px;
 }
+
+.p-col-4 .p-field label {
+    margin-right: 8px;
+}
+
+.input-switch {
+    display: flex;
+    align-items: center;
+}
+
