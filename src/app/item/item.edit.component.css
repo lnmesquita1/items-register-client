@@ -1,7 +1,3 @@
-.ng-star-inserted {
-    margin-top: 5px;
-}
-
 .p-col-4 .p-field label {
     margin-right: 8px;
 }
@@ -11,3 +7,6 @@
     align-items: center;
 }
 
+.input-group>.form-control {
+    padding: 1rem .75rem;
+}
