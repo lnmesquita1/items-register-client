@@ -1,89 +1,130 @@
-<h3>Cadastro de itens</h3>
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Cadastro de itens</h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <div class="btn-group me-2">
+      <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+      <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+    </div>
+    <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="feather feather-calendar" aria-hidden="true">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+        <line x1="16" y1="2" x2="16" y2="6"></line>
+        <line x1="8" y1="2" x2="8" y2="6"></line>
+        <line x1="3" y1="10" x2="21" y2="10"></line>
+      </svg>
+      This week
+    </button>
+  </div>
+</div>
 
 <form #itemForm="ngForm" (ngSubmit)="validar(itemForm)">
 
-  <p-messages [(value)]="msgs"></p-messages>
+  <div *ngIf="msgs.length > 0" [ngClass]="msgs[0].severity" class="alert" role="alert">
+    {{ msgs[0].detail }}
+  </div>
 
-  <div class="p-fluid p-formgrid p-grid">
-    <div class="p-col-4">
-      <div class="p-field p-col">
-        <label class="label">Nome do item</label>
-        <input [(ngModel)]="nomeItem" name="nomeItem" type="text" size="30" pInputText required>
+  <div class="row g-2">
+    <div class="col-md-4">
+      <div class="form-floating">
+        <input type="text" class="form-control" id="nomeItem" placeholder="Nome do item" 
+              [(ngModel)]="nomeItem" name="nomeItem" required>
+        <label for="nomeItem">Nome do item</label>
         <div *ngIf="nomeItemValidation">
-          <p-message severity="error" text="{{ mensagemCampoObrigatorio }}"></p-message>
+          <div class="alert alert-danger" role="alert">
+            {{ mensagemCampoObrigatorio }}
+          </div>
         </div>
       </div>
     </div>
-    <div class="p-col-4">
-      <div class="p-field p-col">
-        <label class="label">Unidade</label>
-        <p-dropdown [options]="_unidades" (onChange)="verificaAbreviaturaUnidade($event)" required [(ngModel)]="unidade"
-          name="unidade" placeholder="Selecione a unidade" optionLabel="label" [showClear]="true">
-        </p-dropdown>
+    <div class="col-md-4">
+      <div class="form-floating">
+        <select [(ngModel)]="unidade" name="unidade" (onChange)="verificaAbreviaturaUnidade($event)" 
+        class="form-select" id="unidade">
+          <option selected></option>
+          <option *ngFor="let unidade of _unidades" [value]="unidade.value">{{unidade.label}}</option>
+        </select>
+        <label for="unidade">Unidade</label>
         <div *ngIf="unidadeValidation">
-          <p-message severity="error" text="{{ mensagemCampoObrigatorio }}"></p-message>
+          <div class="alert alert-danger" role="alert">
+            {{ mensagemCampoObrigatorio }}
+          </div>
         </div>
       </div>
     </div>
-
-    <div class="p-col-4">
-      <div class="p-field p-col">
-        <label class="label">Quantidade</label>
-        <div class="ui-inputgroup">
-          <input type="number" [(ngModel)]="quantidade" name="quantidade" pInputText>
-          <span class="ui-inputgroup-addon">{{ un }}</span>
-        </div>
+    <div class="col-md-4">
+      <div class="form-floating">
+        <input type="number" [(ngModel)]="quantidade" name="quantidade" 
+        class="form-control" id="quantidade" placeholder="Quantidade" 
+         required>
+        <label for="quantidade">Quantidade</label>
       </div>
     </div>
-    <div class="p-col-4">
-      <div class="p-field p-col">
-        <label class="label">Preço</label>
-        <div class="ui-inputgroup">
-          <input type="text" pInputText currencyMask [(ngModel)]="preco" required name="preco"
-            [options]="{ prefix: '', thousands: '.', decimal: ',' }">
-        </div>
+    <div class="col-md-4">
+      <div class="form-floating">
+        <input type="text" currencyMask [(ngModel)]="preco" name="preco" 
+        class="form-control" id="preco" placeholder="Preço" 
+        [options]="{ prefix: '', thousands: '.', decimal: ',' }"
+         required>
+        <label for="preco">Preço</label>
         <div *ngIf="precoValidation">
-          <p-message severity="error" text="{{ mensagemCampoObrigatorio }}"></p-message>
+          <div class="alert alert-danger" role="alert">
+            {{ mensagemCampoObrigatorio }}
+          </div>
         </div>
       </div>
     </div>
-    <div class="p-col-4">
-      <div class="p-field p-col">
-        <label class="label">Data de validade</label>
-        <div *ngIf="produtoPerecivel;then dataValidadeRequired else dataValidadeNotRequired"></div>
-        <ng-template #dataValidadeRequired>
-          <p-calendar [(ngModel)]="dataValidade" name="dataValidade" rquired dateFormat="dd/mm/yy"></p-calendar>
-        </ng-template>
-        <ng-template #dataValidadeNotRequired>
-          <p-calendar [(ngModel)]="dataValidade" name="dataValidade" dateFormat="dd/mm/yy"></p-calendar>
-        </ng-template>
-        <div *ngIf="dataValidadeValidation">
-          <p-message severity="error" text="{{ mensagemCampoObrigatorio }}"></p-message>
-        </div>
+    <div *ngIf="!produtoPerecivel" class="col-md-4">
+      <div class="form-floating">
+        <div class="input-group mb-3">
+          <input class="form-control"
+                   name="dataValidade" [(ngModel)]="dataValidade" placeholder="Data de validade" ngbDatepicker #v="ngbDatepicker">
+          <button class="btn btn-outline-secondary calendar" (click)="v.toggle()" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+          </button>
+        </div>          
+          <div *ngIf="dataValidadeValidation">
+            <p-message severity="error" text="{{ mensagemCampoObrigatorio }}"></p-message>
+          </div>
       </div>
     </div>
-    <div class="p-col-4">
-      <div class="p-field p-col">
-        <label class="label">Data de fabricação</label>
-        <p-calendar [(ngModel)]="dataFabricacao" name="dataFabricacao" required dateFormat="dd/mm/yy"></p-calendar>
+    <div class="col-md-4">
+      <div class="form-floating">
+        <div class="input-group mb-3">
+          <input class="form-control"
+                   name="dataFabricacao" [(ngModel)]="dataFabricacao" placeholder="Data de fabricação" ngbDatepicker #de="ngbDatepicker">
+          <button class="btn btn-outline-secondary calendar" (click)="de.toggle()" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+          </button>
+        </div>
         <div *ngIf="dataFabricacaoValidation">
           <p-message severity="error" text="{{ mensagemCampoObrigatorio }}"></p-message>
         </div>
       </div>
     </div>
-    <div class="p-col-4">
-      <div class="p-field p-col input-switch">
-        <label class="label">Produto perecível</label>
-        <p-inputSwitch [(ngModel)]="produtoPerecivel" name="produtoPerecivel" required></p-inputSwitch>
-      </div>
-      <div *ngIf="produtoPerecivelValidation">
-        <p-message severity="error" text="{{ mensagemCampoObrigatorio }}"></p-message>
+  </div>
+  <div class="col-md-4">
+    <div class="form-floating">
+      <div class="form-check form-switch">
+        <input class="form-check-input" [(ngModel)]="produtoPerecivel" name="produtoPerecivel" type="checkbox" id="produtoPerecivel">
+        <label class="form-check-label" for="produtoPerecivel">Produto perecível</label>
       </div>
     </div>
-
   </div>
-  <button pButton type="button" (click)="redirectToList()" icon="pi pi-times" label="Cancelar" class="ui-button-danger"
-    style="float:right;"></button>
-  <p-button type="submit" icon="pi pi-check" label="Salvar"
-    style="float:right; margin-right: 3px; margin-bottom: 30px;"></p-button>
+
+  <button style="float:right;" type="button" (click)="redirectToList()" class="btn btn-danger">Cancelar</button>
+  <button style="float:right; margin-right: 3px; margin-bottom: 30px;" type="submit" class="btn btn-success">Salvar</button>
 </form>

@@ -5,12 +5,18 @@ import { Item } from '../model/item.model';
 import { unidades, Unidade } from '../model/unidade.model';
 import { NgForm } from '@angular/forms';
 import { Message } from 'primeng/api';
-import { ConfirmationService } from 'primeng/api';
+import { NgbDateAdapter, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
+import { CustomAdapter } from './custom-adapter.service';
+import { CustomDateParserFormatter } from './custom-date-parser-formatter.service';
 
 @Component({
   selector: 'app-item.edit',
   templateUrl: './item.edit.component.html',
-  styleUrls: ['./item.edit.component.css']
+  styleUrls: ['./item.edit.component.css'],
+  providers: [
+    { provide: NgbDateAdapter, useClass: CustomAdapter },
+    { provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter }
+  ]
 })
 export class ItemEditComponent implements OnInit {
 
@@ -34,7 +40,6 @@ export class ItemEditComponent implements OnInit {
   dataFabricacaoValidation = false;
   dataValidadeValidation = false;
   precoValidation = false;
-  produtoPerecivelValidation = false;
   unidadeValidation = false;
 
   mensagemCampoObrigatorio = 'Este campo é obrigatório!';
@@ -83,9 +88,9 @@ export class ItemEditComponent implements OnInit {
   }
 
   validar(form: NgForm) {
-    const dtFabricacao = new Date(form.value.dataFabricacao);
+    const dtFabricacao = this.stringBrlDateToDate(form.value.dataFabricacao);
     const perecivel = form.value.produtoPerecivel;
-    const dtValidade = new Date(form.value.dataValidade);
+    const dtValidade = this.stringBrlDateToDate(form.value.dataValidade);
     this.verificaCamposPreenchidos(form);
     if (!form.valid) {
       this.verificaCamposPreenchidos(form);
@@ -108,7 +113,6 @@ export class ItemEditComponent implements OnInit {
     this.dataFabricacaoValidation = form.controls.dataFabricacao.status === 'INVALID';
     this.dataValidadeValidation = form.controls.dataValidade.status === 'INVALID';
     this.precoValidation = form.controls.preco.status === 'INVALID';
-    this.produtoPerecivelValidation = form.controls.produtoPerecivel.status === 'INVALID';
     this.unidadeValidation = form.controls.unidade.status === 'INVALID';
   }
 
@@ -133,12 +137,20 @@ export class ItemEditComponent implements OnInit {
 
   showSuccess() {
     this.msgs = [];
-    this.msgs.push({ severity: 'success', summary: 'Operação efetuada', detail: 'Item salvo com sucesso!' });
+    this.msgs.push({ severity: 'alert-success', summary: 'Operação efetuada', detail: 'Item salvo com sucesso!' });
   }
 
   showWarn(mensagem) {
     this.msgs = [];
-    this.msgs.push({ severity: 'warn', summary: 'Atenção! ', detail: mensagem });
+    this.msgs.push({ severity: 'alert-warning', summary: 'Atenção! ', detail: mensagem });
+  }
+
+  stringBrlDateToDate(date: string) {
+    const splitDate = date.split('-');
+    const year = parseInt(splitDate[2]);
+    const month = parseInt(splitDate[1])-1;
+    const day = parseInt(splitDate[0]);
+    return new Date(year, month, day);
   }
 
 }
